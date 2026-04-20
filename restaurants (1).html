@@ -1,0 +1,917 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>将太郎のおすすめスポット帖</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+JP:wght@300;400;500;600;700&family=Shippori+Mincho:wght@400;500;600;700&family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+:root{
+  --bg:#F7F3EE;
+  --bg2:#F3ECE2;
+  --fg:#2C2622;
+  --accent:#B8926A;
+  --accent-dark:#9E7B55;
+  --accent2:#8B7355;
+  --muted:#9E9389;
+  --card:#FFFCF8;
+  --gold:#C9A876;
+}
+html{scroll-snap-type:y mandatory;overflow-y:scroll;overflow-x:hidden;scroll-behavior:smooth}
+body{
+  font-family:'Shippori Mincho','Noto Serif JP',serif;
+  background:var(--bg);color:var(--fg);
+  -webkit-font-smoothing:antialiased;
+  background-image:
+    url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='80' height='40' viewBox='0 0 80 40'><g fill='none' stroke='%23B8926A' stroke-width='.6' opacity='.15'><path d='M0 40 Q20 0 40 40 T80 40'/><path d='M-40 40 Q-20 0 0 40 T40 40'/><path d='M40 40 Q60 0 80 40 T120 40'/></g></svg>");
+  background-size:80px 40px;
+}
+
+/* ===== PAGE ===== */
+.page{
+  min-height:100vh;min-height:100dvh;
+  scroll-snap-align:start;
+  display:flex;align-items:center;justify-content:center;
+  position:relative;overflow:hidden;
+  padding:2.5rem 1.5rem;
+}
+
+/* ===== COVER ===== */
+.cover{
+  flex-direction:column;gap:1.2rem;text-align:center;
+  background:
+    radial-gradient(ellipse at 30% 20%,rgba(201,168,118,.12) 0%,transparent 55%),
+    radial-gradient(ellipse at 70% 80%,rgba(184,146,106,.08) 0%,transparent 50%),
+    linear-gradient(170deg,#F7F3EE 0%,#EDE6DC 50%,#E8DFD3 100%);
+}
+.cover-inner{position:relative;z-index:1;max-width:460px}
+.cover-seal{
+  width:80px;height:80px;margin:0 auto 1.2rem;
+  border:1px solid var(--accent);border-radius:50%;
+  display:flex;align-items:center;justify-content:center;
+  position:relative;
+}
+.cover-seal::before,.cover-seal::after{
+  content:'';position:absolute;inset:4px;border:1px solid var(--accent);
+  border-radius:50%;opacity:.4;
+}
+.cover-seal::after{inset:8px;opacity:.2}
+.cover-seal-inner{
+  font-family:'Cormorant Garamond',serif;
+  font-size:1.4rem;font-style:italic;
+  color:var(--accent-dark);z-index:1;
+  letter-spacing:.02em;
+}
+.cover-label{
+  font-family:'Cormorant Garamond',serif;font-size:.75rem;letter-spacing:.35em;
+  text-transform:uppercase;color:var(--accent);margin-bottom:1rem;
+  font-weight:500;
+}
+.cover h1{
+  font-size:clamp(1.6rem,5vw,2.4rem);font-weight:600;line-height:1.7;
+  letter-spacing:.08em;margin-bottom:.6rem;
+}
+.cover h1 span{display:block;font-size:.55em;font-weight:400;color:var(--muted);letter-spacing:.15em;margin-top:.3rem}
+.cover-sub{font-size:.82rem;line-height:2;color:var(--muted);letter-spacing:.04em}
+.ornament{
+  display:flex;align-items:center;justify-content:center;gap:.6rem;
+  margin:1.2rem auto;
+}
+.ornament::before,.ornament::after{
+  content:'';height:1px;width:40px;background:var(--accent);opacity:.5;
+}
+.ornament-diamond{
+  color:var(--accent);font-size:.65rem;
+  transform:rotate(45deg);display:inline-block;
+}
+.cover-scroll{
+  font-size:.65rem;letter-spacing:.2em;color:var(--accent);
+  animation:pulse 2s ease-in-out infinite;margin-top:.5rem;
+}
+@keyframes pulse{0%,100%{opacity:.4}50%{opacity:1}}
+
+/* ===== INDEX (TOC) ===== */
+.toc{
+  background:linear-gradient(180deg,#F9F5F0,#F3EDE5);
+  flex-direction:column;
+}
+.toc-inner{max-width:520px;width:100%;z-index:1;position:relative}
+.toc-head{text-align:center;margin-bottom:1.5rem}
+.toc-kanji{
+  font-size:1.8rem;font-weight:500;letter-spacing:.5em;
+  padding-left:.5em;
+}
+.toc-en{
+  font-family:'Cormorant Garamond',serif;font-style:italic;
+  font-size:.7rem;letter-spacing:.35em;color:var(--accent);
+  text-transform:uppercase;margin-top:.3rem;
+}
+.toc-list{list-style:none;display:flex;flex-direction:column;gap:.55rem}
+.toc-item{
+  display:grid;grid-template-columns:28px 1fr auto;
+  gap:.8rem;align-items:baseline;
+  padding:.4rem 0;border-bottom:1px dotted rgba(184,146,106,.35);
+  text-decoration:none;color:inherit;
+  transition:background .2s,padding-left .2s;
+}
+.toc-item:hover{background:rgba(201,168,118,.08);padding-left:.3rem}
+.toc-n{
+  font-family:'Cormorant Garamond',serif;font-style:italic;
+  color:var(--accent);font-size:.9rem;
+}
+.toc-name{font-size:.82rem;font-weight:500;letter-spacing:.03em}
+.toc-name small{
+  display:block;font-family:'Cormorant Garamond',serif;
+  font-style:italic;font-size:.6rem;color:var(--muted);
+  letter-spacing:.1em;margin-top:.1rem;
+}
+.toc-cat{
+  font-family:'Cormorant Garamond',serif;
+  font-size:.6rem;letter-spacing:.15em;
+  color:var(--accent2);text-transform:uppercase;
+  white-space:nowrap;
+}
+
+/* ===== RESTAURANT CARD ===== */
+.rest-page:nth-child(odd){background:linear-gradient(175deg,#F7F3EE,#F3EDE5)}
+.rest-page:nth-child(even){background:linear-gradient(175deg,#FAF7F2,#F5EFE7)}
+.rest-card{max-width:520px;width:100%;position:relative;z-index:1}
+
+/* Large ghost number (background) */
+.rest-num-big{
+  font-family:'Cormorant Garamond',serif;
+  font-size:clamp(5rem,14vw,8rem);font-weight:300;
+  color:var(--accent);opacity:.12;
+  line-height:1;position:absolute;
+  top:-2rem;right:-.5rem;
+  pointer-events:none;letter-spacing:-.02em;
+}
+
+/* Circled number (foreground) */
+.rest-num-circle{
+  width:48px;height:48px;border-radius:50%;
+  border:1px solid var(--accent);
+  display:inline-flex;align-items:center;justify-content:center;
+  font-family:'Cormorant Garamond',serif;font-style:italic;
+  font-size:1.1rem;color:var(--accent-dark);
+  background:rgba(255,252,248,.6);
+  position:relative;margin-bottom:.9rem;
+}
+.rest-num-circle::before{
+  content:'';position:absolute;inset:3px;
+  border:1px solid var(--accent);border-radius:50%;opacity:.3;
+}
+
+/* Category icon row */
+.rest-cat-row{
+  display:flex;align-items:center;gap:.55rem;
+  margin-bottom:.6rem;flex-wrap:wrap;
+}
+.rest-icon{
+  width:28px;height:28px;
+  display:inline-flex;align-items:center;justify-content:center;
+  color:var(--accent-dark);
+}
+.rest-icon svg{width:100%;height:100%;stroke-width:1.2}
+.rest-tag{
+  font-size:.6rem;letter-spacing:.22em;
+  text-transform:uppercase;
+  color:var(--accent-dark);
+  padding:.2rem .6rem;
+  border:1px solid var(--accent);
+  border-radius:1px;
+  font-family:'Cormorant Garamond',serif;font-weight:600;
+}
+.rest-area{
+  font-size:.65rem;letter-spacing:.12em;color:var(--muted);
+  font-family:'Cormorant Garamond',serif;
+}
+.rest-year{
+  font-family:'Cormorant Garamond',serif;font-style:italic;
+  font-size:.62rem;color:var(--accent-dark);
+  letter-spacing:.1em;margin-left:auto;
+  padding-left:.5rem;
+}
+
+/* Name */
+.rest-name{
+  font-size:clamp(1.35rem,4.8vw,1.9rem);
+  font-weight:700;letter-spacing:.04em;
+  line-height:1.45;margin-bottom:.25rem;
+}
+.rest-name-en{
+  font-family:'Cormorant Garamond',serif;
+  font-size:.72rem;font-weight:400;font-style:italic;
+  color:var(--accent2);letter-spacing:.08em;
+  margin-bottom:1.1rem;
+}
+
+/* Ornamental divider */
+.rest-ornament{
+  display:flex;align-items:center;gap:.5rem;
+  margin-bottom:1.2rem;width:100%;
+}
+.rest-ornament::before,.rest-ornament::after{
+  content:'';flex:1;height:1px;
+  background:linear-gradient(90deg,transparent,var(--accent),transparent);
+  opacity:.5;
+}
+.rest-ornament::before{background:linear-gradient(90deg,var(--accent),transparent);opacity:.4;max-width:40px}
+.rest-ornament::after{background:linear-gradient(90deg,transparent,var(--accent),var(--accent),transparent);opacity:.5}
+.rest-ornament span{
+  color:var(--accent);font-size:.55rem;
+  transform:rotate(45deg);display:inline-block;
+}
+
+/* Story */
+.rest-story{
+  font-size:.82rem;line-height:2.15;
+  letter-spacing:.02em;color:#4A433D;
+  margin-bottom:1.4rem;
+}
+.rest-story em{
+  font-style:normal;
+  background:linear-gradient(transparent 62%,rgba(201,168,118,.22) 62%);
+  padding:0 .1em;
+}
+
+/* Recommend */
+.rest-rec{
+  font-size:.7rem;letter-spacing:.06em;
+  color:var(--accent2);
+  background:rgba(201,168,118,.06);
+  border-left:2px solid var(--accent);
+  padding:.7rem .9rem;
+  margin-bottom:1.3rem;
+  line-height:1.8;
+}
+.rest-rec strong{font-weight:600;color:var(--accent-dark)}
+
+/* Link */
+.rest-link{
+  display:inline-flex;align-items:center;gap:.4rem;
+  font-family:'Cormorant Garamond',serif;
+  font-size:.7rem;letter-spacing:.15em;
+  color:var(--accent-dark);text-decoration:none;
+  padding:.5rem .9rem;
+  border:1px solid var(--accent);border-radius:1px;
+  transition:all .3s;position:relative;
+  background:rgba(255,252,248,.4);
+}
+.rest-link:hover{background:var(--accent);color:#fff}
+.rest-link svg{width:12px;height:12px}
+
+/* Page indicator dots */
+.dots{
+  position:fixed;right:1rem;top:50%;transform:translateY(-50%);
+  display:flex;flex-direction:column;gap:8px;z-index:100;
+}
+.dot{
+  width:6px;height:6px;border-radius:50%;
+  background:var(--accent);opacity:.2;
+  transition:opacity .3s,transform .3s;
+  cursor:pointer;border:none;padding:0;
+}
+.dot.active{opacity:.8;transform:scale(1.4)}
+
+/* Decorative corner — upgraded */
+.corner-deco{
+  position:absolute;width:70px;height:70px;opacity:.25;
+  pointer-events:none;
+}
+.corner-deco svg{width:100%;height:100%}
+.corner-deco.tl{top:1.2rem;left:1.2rem}
+.corner-deco.tr{top:1.2rem;right:1.2rem;transform:scaleX(-1)}
+.corner-deco.bl{bottom:1.2rem;left:1.2rem;transform:scaleY(-1)}
+.corner-deco.br{bottom:1.2rem;right:1.2rem;transform:scale(-1,-1)}
+
+/* ===== ENDING ===== */
+.ending{
+  flex-direction:column;text-align:center;gap:1rem;
+  background:
+    radial-gradient(ellipse at 50% 50%,rgba(201,168,118,.15) 0%,transparent 60%),
+    linear-gradient(170deg,#EDE6DC,#E8DFD3);
+}
+.ending-inner{position:relative;z-index:1;max-width:420px}
+.ending h2{
+  font-size:clamp(1.2rem,3.5vw,1.6rem);font-weight:600;
+  letter-spacing:.08em;line-height:1.8;margin-bottom:.8rem;
+}
+.ending p{font-size:.8rem;line-height:2;color:var(--muted);letter-spacing:.04em}
+.ending-sig{
+  font-family:'Cormorant Garamond',serif;font-style:italic;
+  font-size:1.3rem;color:var(--accent-dark);
+  letter-spacing:.05em;margin-top:1rem;
+}
+
+/* Animation */
+.rest-card>*{
+  opacity:0;transform:translateY(20px);
+  transition:opacity .7s ease,transform .7s ease;
+}
+.rest-card.visible>*{opacity:1;transform:translateY(0)}
+.rest-card.visible>*:nth-child(1){transition-delay:.05s}
+.rest-card.visible>*:nth-child(2){transition-delay:.1s}
+.rest-card.visible>*:nth-child(3){transition-delay:.15s}
+.rest-card.visible>*:nth-child(4){transition-delay:.2s}
+.rest-card.visible>*:nth-child(5){transition-delay:.25s}
+.rest-card.visible>*:nth-child(6){transition-delay:.3s}
+.rest-card.visible>*:nth-child(7){transition-delay:.35s}
+.rest-card.visible>*:nth-child(8){transition-delay:.4s}
+.rest-card.visible>*:nth-child(9){transition-delay:.45s}
+.rest-card.visible>*:nth-child(10){transition-delay:.5s}
+
+/* Mobile tweak */
+@media(max-width:600px){
+  .page{padding:2.2rem 1.1rem}
+  .rest-num-big{font-size:4.8rem;top:-1rem;right:0}
+  .rest-num-circle{width:42px;height:42px;font-size:1rem}
+  .dots{right:.5rem;gap:6px}
+  .dot{width:5px;height:5px}
+  .corner-deco{width:45px;height:45px;opacity:.2}
+  .rest-year{margin-left:0;width:100%;padding-left:0}
+  .toc-item{grid-template-columns:24px 1fr auto;gap:.6rem}
+}
+</style>
+</head>
+<body>
+
+<!-- SVG DEFS (icons reused) -->
+<svg width="0" height="0" style="position:absolute">
+  <defs>
+    <!-- Corner ornament (art-deco leaf + diamond) -->
+    <symbol id="corner" viewBox="0 0 60 60">
+      <g fill="none" stroke="currentColor" stroke-width=".8">
+        <path d="M0 30 L0 0 L30 0"/>
+        <path d="M8 0 L8 8 L0 8" opacity=".7"/>
+        <circle cx="14" cy="14" r="1.5" fill="currentColor"/>
+        <path d="M22 4 L26 8 L22 12 L18 8 Z" opacity=".6"/>
+      </g>
+    </symbol>
+    <!-- Cafe: coffee cup -->
+    <symbol id="ic-cafe" viewBox="0 0 24 24">
+      <g fill="none" stroke="currentColor" stroke-linecap="round">
+        <path d="M5 9h12v7a3 3 0 0 1-3 3H8a3 3 0 0 1-3-3V9z"/>
+        <path d="M17 11h2a2 2 0 0 1 0 4h-2"/>
+        <path d="M8 3c0 1.5 1 2 1 3.5M11 3c0 1.5 1 2 1 3.5M14 3c0 1.5 1 2 1 3.5"/>
+      </g>
+    </symbol>
+    <!-- Lunch: bowl with chopsticks -->
+    <symbol id="ic-lunch" viewBox="0 0 24 24">
+      <g fill="none" stroke="currentColor" stroke-linecap="round">
+        <path d="M3 11h18a9 9 0 0 1-9 9 9 9 0 0 1-9-9z"/>
+        <path d="M2 11h20" />
+        <path d="M7 4l4 6M10 3l3 7"/>
+      </g>
+    </symbol>
+    <!-- Izakaya: tokkuri (sake bottle) -->
+    <symbol id="ic-izakaya" viewBox="0 0 24 24">
+      <g fill="none" stroke="currentColor" stroke-linecap="round">
+        <path d="M10 3h4v5c2 1 3 3 3 6v4a3 3 0 0 1-3 3H10a3 3 0 0 1-3-3v-4c0-3 1-5 3-6V3z"/>
+        <path d="M9 3h6"/>
+      </g>
+    </symbol>
+    <!-- Sauna: steam waves -->
+    <symbol id="ic-sauna" viewBox="0 0 24 24">
+      <g fill="none" stroke="currentColor" stroke-linecap="round">
+        <path d="M5 14c1.5-2 3-2 4.5 0s3 2 4.5 0 3-2 4.5 0"/>
+        <path d="M5 18c1.5-2 3-2 4.5 0s3 2 4.5 0 3-2 4.5 0" opacity=".6"/>
+        <path d="M8 10c0-1 .5-1.5 1-2.5s-.5-2-1-3"/>
+        <path d="M12 10c0-1 .5-1.5 1-2.5s-.5-2-1-3"/>
+        <path d="M16 10c0-1 .5-1.5 1-2.5s-.5-2-1-3"/>
+      </g>
+    </symbol>
+    <!-- Yakiniku: flame -->
+    <symbol id="ic-yakiniku" viewBox="0 0 24 24">
+      <g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M12 3c1 3 4 5 4 9a4 4 0 0 1-8 0c0-2 1-3 2-4-.5 2 .5 3 1.5 3 1 0 1.5-1 1-2.5-.5-2-1-4 .5-5.5z"/>
+      </g>
+    </symbol>
+    <!-- Bar: cocktail glass -->
+    <symbol id="ic-bar" viewBox="0 0 24 24">
+      <g fill="none" stroke="currentColor" stroke-linecap="round">
+        <path d="M4 4h16l-8 9-8-9z"/>
+        <path d="M12 13v7"/>
+        <path d="M8 20h8"/>
+      </g>
+    </symbol>
+    <!-- Shisha: hookah smoke -->
+    <symbol id="ic-shisha" viewBox="0 0 24 24">
+      <g fill="none" stroke="currentColor" stroke-linecap="round">
+        <path d="M10 14c0-2 2-3 2-5s-2-2-2-4"/>
+        <path d="M14 14c0-2 2-3 2-5s-2-2-2-4" opacity=".6"/>
+        <path d="M7 17h10l-1 3H8l-1-3z"/>
+        <path d="M9 14h6v3H9z"/>
+      </g>
+    </symbol>
+    <!-- French: wine glass -->
+    <symbol id="ic-french" viewBox="0 0 24 24">
+      <g fill="none" stroke="currentColor" stroke-linecap="round">
+        <path d="M8 3h8l-1 7a3 3 0 0 1-3 3 3 3 0 0 1-3-3l-1-7z"/>
+        <path d="M12 13v7"/>
+        <path d="M8 20h8"/>
+      </g>
+    </symbol>
+  </defs>
+</svg>
+
+<nav class="dots" id="dots"></nav>
+
+<!-- ===== COVER ===== -->
+<section class="page cover">
+  <div class="corner-deco tl" style="color:var(--accent)"><svg><use href="#corner"/></svg></div>
+  <div class="corner-deco tr" style="color:var(--accent)"><svg><use href="#corner"/></svg></div>
+  <div class="corner-deco bl" style="color:var(--accent)"><svg><use href="#corner"/></svg></div>
+  <div class="corner-deco br" style="color:var(--accent)"><svg><use href="#corner"/></svg></div>
+  <div class="cover-inner">
+    <p class="cover-label">Shotaro's Favorite Spots</p>
+    <h1>
+      将太郎の<br>おすすめスポット帖
+      <span>— 東京での足跡を辿る店 —</span>
+    </h1>
+    <div class="ornament"><span class="ornament-diamond">◆</span></div>
+    <p class="cover-sub">
+      この街で働き、暮らし、走り、飲んで。<br>
+      渋谷・神泉・池尻を中心に過ごした日々の中で<br>
+      見つけた、お気に入りの場所たち。
+    </p>
+    <div class="ornament"><span class="ornament-diamond">◆</span></div>
+    <p class="cover-scroll">▼ SCROLL ▼</p>
+  </div>
+</section>
+
+<!-- ===== INDEX ===== -->
+<section class="page toc">
+  <div class="corner-deco tl" style="color:var(--accent)"><svg><use href="#corner"/></svg></div>
+  <div class="corner-deco tr" style="color:var(--accent)"><svg><use href="#corner"/></svg></div>
+  <div class="corner-deco bl" style="color:var(--accent)"><svg><use href="#corner"/></svg></div>
+  <div class="corner-deco br" style="color:var(--accent)"><svg><use href="#corner"/></svg></div>
+  <div class="toc-inner">
+    <div class="toc-head">
+      <div class="toc-kanji">目 次</div>
+      <div class="toc-en">Index of 14 Places</div>
+    </div>
+    <ul class="toc-list">
+      <li><a class="toc-item" href="#p1"><span class="toc-n">01</span><span class="toc-name">FabCafe Tokyo<small>SHIBUYA · 道玄坂上</small></span><span class="toc-cat">Cafe</span></a></li>
+      <li><a class="toc-item" href="#p2"><span class="toc-n">02</span><span class="toc-name">遊漁 和田丸<small>SHINSEN · 神泉</small></span><span class="toc-cat">Lunch</span></a></li>
+      <li><a class="toc-item" href="#p3"><span class="toc-n">03</span><span class="toc-name">Coffee House スカーレット<small>SHIBUYA · 道玄坂上</small></span><span class="toc-cat">Cafe</span></a></li>
+      <li><a class="toc-item" href="#p4"><span class="toc-n">04</span><span class="toc-name">HEART'S LIGHT COFFEE<small>SHINSEN · 神泉町</small></span><span class="toc-cat">Cafe</span></a></li>
+      <li><a class="toc-item" href="#p5"><span class="toc-n">05</span><span class="toc-name">ガリッと酒場<small>SHIBUYA · 道玄坂</small></span><span class="toc-cat">Izakaya</span></a></li>
+      <li><a class="toc-item" href="#p6"><span class="toc-n">06</span><span class="toc-name">文化浴泉<small>IKEJIRI · 池尻大橋</small></span><span class="toc-cat">Sauna</span></a></li>
+      <li><a class="toc-item" href="#p7"><span class="toc-n">07</span><span class="toc-name">焼肉家 てっちゃん<small>IKEJIRI · 池尻大橋</small></span><span class="toc-cat">Yakiniku</span></a></li>
+      <li><a class="toc-item" href="#p8"><span class="toc-n">08</span><span class="toc-name">ひととき<small>SHINSEN · 神泉</small></span><span class="toc-cat">Bar</span></a></li>
+      <li><a class="toc-item" href="#p9"><span class="toc-n">09</span><span class="toc-name">No.<small>UEHARA · 代々木上原</small></span><span class="toc-cat">Cafe</span></a></li>
+      <li><a class="toc-item" href="#p10"><span class="toc-n">10</span><span class="toc-name">A moment<small>EBISU · 恵比寿</small></span><span class="toc-cat">Shisha</span></a></li>
+      <li><a class="toc-item" href="#p11"><span class="toc-n">11</span><span class="toc-name">Sillage シアージュ<small>OIMACHI · 大井町</small></span><span class="toc-cat">Shisha</span></a></li>
+      <li><a class="toc-item" href="#p12"><span class="toc-n">12</span><span class="toc-name">Ăn Đi アンディ<small>GAIEN-MAE · 外苑前</small></span><span class="toc-cat">Lunch</span></a></li>
+      <li><a class="toc-item" href="#p13"><span class="toc-n">13</span><span class="toc-name">ネギタン ホルモン寺山<small>GOTANDA · 五反田</small></span><span class="toc-cat">Yakiniku</span></a></li>
+      <li><a class="toc-item" href="#p14"><span class="toc-n">14</span><span class="toc-name">Restaurant MAY<small>GOTANDA · 五反田</small></span><span class="toc-cat">French</span></a></li>
+    </ul>
+  </div>
+</section>
+
+<!-- 01 FabCafe -->
+<section class="page rest-page" id="p1">
+  <div class="corner-deco tl" style="color:var(--accent)"><svg><use href="#corner"/></svg></div>
+  <div class="corner-deco tr" style="color:var(--accent)"><svg><use href="#corner"/></svg></div>
+  <div class="corner-deco bl" style="color:var(--accent)"><svg><use href="#corner"/></svg></div>
+  <div class="corner-deco br" style="color:var(--accent)"><svg><use href="#corner"/></svg></div>
+  <div class="rest-card">
+    <div class="rest-num-big">01</div>
+    <div class="rest-cat-row">
+      <span class="rest-icon"><svg><use href="#ic-cafe"/></svg></span>
+      <span class="rest-tag">Cafe</span>
+      <span class="rest-area">Shibuya — 道玄坂上</span>
+    </div>
+    <h2 class="rest-name">FabCafe Tokyo</h2>
+    <p class="rest-name-en">fabcafe.com / jp / tokyo</p>
+    <div class="rest-ornament"><span>◆</span></div>
+    <p class="rest-story">
+      2020年から2022年の夏まで勤務していた<em>Loftwork</em>のオフィスビル1階にあるカフェ。渋谷って意外と、電源があってWifi繋ぎ直さなくて良いカフェがないんです。道玄坂上まで足を伸ばして行ってみてください。<br><br>
+      ほぼ毎日利用して、プロジェクトの話をたくさんした場所。退職してからもしばらく頻繁に通っていました。たまに展示をやっていて入りにくいオーラを出しているけど、だいたい通常営業中なのでお気遣いなく。
+    </p>
+    <div class="rest-rec"><strong>おすすめ：</strong>こだわりのシングルオリジンコーヒー、旬の野菜フード</div>
+    <a class="rest-link" href="https://fabcafe.com/jp/tokyo/" target="_blank" rel="noopener">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+      VIEW DETAILS
+    </a>
+  </div>
+</section>
+
+<!-- 02 和田丸 -->
+<section class="page rest-page" id="p2">
+  <div class="corner-deco tl" style="color:var(--accent)"><svg><use href="#corner"/></svg></div>
+  <div class="corner-deco tr" style="color:var(--accent)"><svg><use href="#corner"/></svg></div>
+  <div class="corner-deco bl" style="color:var(--accent)"><svg><use href="#corner"/></svg></div>
+  <div class="corner-deco br" style="color:var(--accent)"><svg><use href="#corner"/></svg></div>
+  <div class="rest-card">
+    <div class="rest-num-big">02</div>
+    <div class="rest-cat-row">
+      <span class="rest-icon"><svg><use href="#ic-lunch"/></svg></span>
+      <span class="rest-tag">Lunch</span>
+      <span class="rest-area">Shibuya — 神泉</span>
+    </div>
+    <h2 class="rest-name">遊漁 和田丸</h2>
+    <p class="rest-name-en">Yūgyo Wadamaru</p>
+    <div class="rest-ornament"><span>◆</span></div>
+    <p class="rest-story">
+      Loftwork時代、同期のみきちゃんとよく行った和田丸。<em>海鮮塩ユッケ丼</em>っていう、とろろと卵のかかった海鮮丼が死ぬほどうまい。<br><br>
+      場所はわかりにくいけど、一回行ってみて。神泉駅から徒歩2分、路地の階段を上がったところにある隠れ家。魚一筋20年以上の店主が毎朝仕入れる鮮魚は間違いなし。
+    </p>
+    <div class="rest-rec"><strong>必食：</strong>海鮮塩ユッケ丼(とろろ×温泉卵×ごま油)</div>
+    <a class="rest-link" href="https://tabelog.com/tokyo/A1303/A130301/13002065/" target="_blank" rel="noopener">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+      VIEW DETAILS
+    </a>
+  </div>
+</section>
+
+<!-- 03 スカーレット -->
+<section class="page rest-page" id="p3">
+  <div class="corner-deco tl" style="color:var(--accent)"><svg><use href="#corner"/></svg></div>
+  <div class="corner-deco tr" style="color:var(--accent)"><svg><use href="#corner"/></svg></div>
+  <div class="corner-deco bl" style="color:var(--accent)"><svg><use href="#corner"/></svg></div>
+  <div class="corner-deco br" style="color:var(--accent)"><svg><use href="#corner"/></svg></div>
+  <div class="rest-card">
+    <div class="rest-num-big">03</div>
+    <div class="rest-cat-row">
+      <span class="rest-icon"><svg><use href="#ic-cafe"/></svg></span>
+      <span class="rest-tag">Cafe</span>
+      <span class="rest-area">Shibuya — 道玄坂上</span>
+    </div>
+    <h2 class="rest-name">Coffee House<br>スカーレット</h2>
+    <p class="rest-name-en">Coffee House Scarlet</p>
+    <div class="rest-ornament"><span>◆</span></div>
+    <p class="rest-story">
+      渋谷の道玄坂上にある<em>昭和レトロな喫茶店</em>。赤を基調とした店内は完全にタイムスリップ空間。塩っ辛いピラフが美味しい。<br><br>
+      仕事中、一人でタイムスリップしたい時に、たまーに行ってた。渋谷にまだこんなカフェがあるのかってレベル。店内はおタバコモクモクなのでお気をつけて。
+    </p>
+    <div class="rest-rec"><strong>おすすめ：</strong>ピラフ、ナポリタン、アイスコーヒー</div>
+    <a class="rest-link" href="https://tabelog.com/tokyo/A1303/A130301/13122357/" target="_blank" rel="noopener">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+      VIEW DETAILS
+    </a>
+  </div>
+</section>
+
+<!-- 04 HEART'S LIGHT -->
+<section class="page rest-page" id="p4">
+  <div class="corner-deco tl" style="color:var(--accent)"><svg><use href="#corner"/></svg></div>
+  <div class="corner-deco tr" style="color:var(--accent)"><svg><use href="#corner"/></svg></div>
+  <div class="corner-deco bl" style="color:var(--accent)"><svg><use href="#corner"/></svg></div>
+  <div class="corner-deco br" style="color:var(--accent)"><svg><use href="#corner"/></svg></div>
+  <div class="rest-card">
+    <div class="rest-num-big">04</div>
+    <div class="rest-cat-row">
+      <span class="rest-icon"><svg><use href="#ic-cafe"/></svg></span>
+      <span class="rest-tag">Cafe</span>
+      <span class="rest-area">Shinsen — 神泉町</span>
+    </div>
+    <h2 class="rest-name">HEART'S LIGHT<br>COFFEE</h2>
+    <p class="rest-name-en">Hearts Light Coffee — Shinsen Roastery</p>
+    <div class="rest-ornament"><span>◆</span></div>
+    <p class="rest-story">
+      神泉の奥の方にある自家焙煎カフェ。最初に住んでたマンションから徒歩2分で、よく通っていた。<em>カフェモカがむちゃくちゃうまい。たぶん東京イチ。</em><br><br>
+      グラスも手作りで飲み物に合わせて制作したとか。焙煎機もカフェの中にあるし、JBLスピーカーからレコードのジャズが流れている。こだわりの塊のようなお店。
+    </p>
+    <div class="rest-rec"><strong>必飲：</strong>カフェモカ — 東京イチの自信作</div>
+    <a class="rest-link" href="https://heartslightcoffee.stores.jp/" target="_blank" rel="noopener">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+      VIEW DETAILS
+    </a>
+  </div>
+</section>
+
+<!-- 05 ガリッと酒場 -->
+<section class="page rest-page" id="p5">
+  <div class="corner-deco tl" style="color:var(--accent)"><svg><use href="#corner"/></svg></div>
+  <div class="corner-deco tr" style="color:var(--accent)"><svg><use href="#corner"/></svg></div>
+  <div class="corner-deco bl" style="color:var(--accent)"><svg><use href="#corner"/></svg></div>
+  <div class="corner-deco br" style="color:var(--accent)"><svg><use href="#corner"/></svg></div>
+  <div class="rest-card">
+    <div class="rest-num-big">05</div>
+    <div class="rest-cat-row">
+      <span class="rest-icon"><svg><use href="#ic-izakaya"/></svg></span>
+      <span class="rest-tag">Izakaya</span>
+      <span class="rest-area">Shibuya — 道玄坂</span>
+    </div>
+    <h2 class="rest-name">ガリッと酒場</h2>
+    <p class="rest-name-en">Garitto Sakaba — Dogenzaka</p>
+    <div class="rest-ornament"><span>◆</span></div>
+    <p class="rest-story">
+      和食メインの居酒屋さん。メニューは基本的に全部美味しい。でもこの店の面白いところは、<em>大番ビル</em>っていう渋谷でもイチ二を争う魔境ビルの中にあるところ。1階とか2階とかいう概念がぐちゃぐちゃになる。<br><br>
+      店内は落ち着いていて、周りを気にせずガヤガヤ話したい時やデートでも使える。かなりの人気店なので<em>予約必須</em>。店内でタバコも吸えます。
+    </p>
+    <div class="rest-rec"><strong>おすすめ：</strong>だし巻き玉子のいくらのせ、鶏白レバテキ</div>
+    <a class="rest-link" href="https://tabelog.com/tokyo/A1303/A130301/13252927/" target="_blank" rel="noopener">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+      VIEW DETAILS
+    </a>
+  </div>
+</section>
+
+<!-- 06 文化浴泉 -->
+<section class="page rest-page" id="p6">
+  <div class="corner-deco tl" style="color:var(--accent)"><svg><use href="#corner"/></svg></div>
+  <div class="corner-deco tr" style="color:var(--accent)"><svg><use href="#corner"/></svg></div>
+  <div class="corner-deco bl" style="color:var(--accent)"><svg><use href="#corner"/></svg></div>
+  <div class="corner-deco br" style="color:var(--accent)"><svg><use href="#corner"/></svg></div>
+  <div class="rest-card">
+    <div class="rest-num-big">06</div>
+    <div class="rest-cat-row">
+      <span class="rest-icon"><svg><use href="#ic-sauna"/></svg></span>
+      <span class="rest-tag">Sauna</span>
+      <span class="rest-area">Ikejiri-Ōhashi — 池尻大橋</span>
+    </div>
+    <h2 class="rest-name">文化浴泉</h2>
+    <p class="rest-name-en">Bunka Yokusen — est. 1928</p>
+    <div class="rest-ornament"><span>◆</span></div>
+    <p class="rest-story">
+      言わずと知れた名湯。数年前に男湯のサウナ室、チラー、ととのいスペースが大幅に改良されて、孤高を極めた。<br><br>
+      <em>独立して間もない時、仕事が煮詰まったらとりあえず文化浴泉へ。</em>脳みそを空っぽにしていた。池尻から神泉までの徒歩20分がトトノイ後にはちょうどよい。冬とか特にね。前職時代も川原田とよくトトノッては目黒川見ながら恋バナもしたようなしなかったような。
+    </p>
+    <div class="rest-rec"><strong>ポイント：</strong>ジャズ流れるサウナ室、オートロウリュ、14℃の水風呂</div>
+    <a class="rest-link" href="https://www.bunkayokusen1010.com/" target="_blank" rel="noopener">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+      VIEW DETAILS
+    </a>
+  </div>
+</section>
+
+<!-- 07 てっちゃん -->
+<section class="page rest-page" id="p7">
+  <div class="corner-deco tl" style="color:var(--accent)"><svg><use href="#corner"/></svg></div>
+  <div class="corner-deco tr" style="color:var(--accent)"><svg><use href="#corner"/></svg></div>
+  <div class="corner-deco bl" style="color:var(--accent)"><svg><use href="#corner"/></svg></div>
+  <div class="corner-deco br" style="color:var(--accent)"><svg><use href="#corner"/></svg></div>
+  <div class="rest-card">
+    <div class="rest-num-big">07</div>
+    <div class="rest-cat-row">
+      <span class="rest-icon"><svg><use href="#ic-yakiniku"/></svg></span>
+      <span class="rest-tag">Yakiniku</span>
+      <span class="rest-area">Ikejiri-Ōhashi — 池尻大橋</span>
+    </div>
+    <h2 class="rest-name">焼肉家 てっちゃん</h2>
+    <p class="rest-name-en">Yakinikuya Tetchan</p>
+    <div class="rest-ornament"><span>◆</span></div>
+    <p class="rest-story">
+      我らが顧問弁護士、細谷先生の激推しにより1年くらい前に初来訪。<em>マジで美味しい焼肉。</em>肉自体も旨いけど、創作系メニューがかなり美味しい。<br><br>
+      パリピ(パリパリピーマン×タン煮込み)、飲めるサーロインとかはマジで飛べる。<em>文化浴泉に入った後にてっちゃんに入れた日には、祈りを捧げたほうが良い。</em>
+    </p>
+    <div class="rest-rec"><strong>必食：</strong>飲めるサーロイン、パリピ、アツタン</div>
+    <a class="rest-link" href="https://tabelog.com/tokyo/A1317/A131705/13278111/" target="_blank" rel="noopener">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+      VIEW DETAILS
+    </a>
+  </div>
+</section>
+
+<!-- 08 ひととき -->
+<section class="page rest-page" id="p8">
+  <div class="corner-deco tl" style="color:var(--accent)"><svg><use href="#corner"/></svg></div>
+  <div class="corner-deco tr" style="color:var(--accent)"><svg><use href="#corner"/></svg></div>
+  <div class="corner-deco bl" style="color:var(--accent)"><svg><use href="#corner"/></svg></div>
+  <div class="corner-deco br" style="color:var(--accent)"><svg><use href="#corner"/></svg></div>
+  <div class="rest-card">
+    <div class="rest-num-big">08</div>
+    <div class="rest-cat-row">
+      <span class="rest-icon"><svg><use href="#ic-bar"/></svg></span>
+      <span class="rest-tag">Bar</span>
+      <span class="rest-area">Shinsen — 神泉</span>
+    </div>
+    <h2 class="rest-name">ひととき</h2>
+    <p class="rest-name-en">Hitotoki — a moment of stillness</p>
+    <div class="rest-ornament"><span>◆</span></div>
+    <p class="rest-story">
+      将太郎が神泉に住んでいた2025年まで足繁く通ったBar。6席のカウンターと1席のテーブルのみの落ち着いた空間。<br><br>
+      お酒は言わずもがな、マスターとの会話、シーシャや珍しいシガーまで、<em>この空間にて提供される全てに満足を楽しむことができる。</em>1杯目のおすすめは季節のフルーツカクテル。<br><br>
+      最近は怪しげなドリンクブランドをマスターと一緒に作っているらしい。<em>マスターの犬養さんは会場にもいらっしゃる予定ですので、ぜひ交流してみてください。</em>
+    </p>
+    <div class="rest-rec"><strong>1杯目に：</strong>季節のフルーツカクテル</div>
+    <a class="rest-link" href="https://tabelog.com/tokyo/A1303/A130301/13244516/" target="_blank" rel="noopener">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+      VIEW DETAILS
+    </a>
+  </div>
+</section>
+
+<!-- 09 No. -->
+<section class="page rest-page" id="p9">
+  <div class="corner-deco tl" style="color:var(--accent)"><svg><use href="#corner"/></svg></div>
+  <div class="corner-deco tr" style="color:var(--accent)"><svg><use href="#corner"/></svg></div>
+  <div class="corner-deco bl" style="color:var(--accent)"><svg><use href="#corner"/></svg></div>
+  <div class="corner-deco br" style="color:var(--accent)"><svg><use href="#corner"/></svg></div>
+  <div class="rest-card">
+    <div class="rest-num-big">09</div>
+    <div class="rest-cat-row">
+      <span class="rest-icon"><svg><use href="#ic-cafe"/></svg></span>
+      <span class="rest-tag">Cafe</span>
+      <span class="rest-area">Yoyogi-Uehara — 代々木上原</span>
+    </div>
+    <h2 class="rest-name">No.</h2>
+    <p class="rest-name-en">Number — a café &amp; bar</p>
+    <div class="rest-ornament"><span>◆</span></div>
+    <p class="rest-story">
+      駅から徒歩2分くらいのところにあるカフェ。<em>その昔イタリアで飲んだカフェラテが美味しすぎて、国内でも同じ味のカフェラテを探してカフェを回っていた時期に</em>見つけたお店。<br><br>
+      ここのカフェラテは、マジでローマで飲んだものと一緒だった。1年くらい前にテナント移転して、広くなったかな？昼はカフェ、14時からはバータイムにもなる。
+    </p>
+    <div class="rest-rec"><strong>必飲：</strong>カフェラテ — ローマの記憶と同じ味</div>
+    <a class="rest-link" href="https://no.301.jp/" target="_blank" rel="noopener">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+      VIEW DETAILS
+    </a>
+  </div>
+</section>
+
+<!-- 10 A moment -->
+<section class="page rest-page" id="p10">
+  <div class="corner-deco tl" style="color:var(--accent)"><svg><use href="#corner"/></svg></div>
+  <div class="corner-deco tr" style="color:var(--accent)"><svg><use href="#corner"/></svg></div>
+  <div class="corner-deco bl" style="color:var(--accent)"><svg><use href="#corner"/></svg></div>
+  <div class="corner-deco br" style="color:var(--accent)"><svg><use href="#corner"/></svg></div>
+  <div class="rest-card">
+    <div class="rest-num-big">10</div>
+    <div class="rest-cat-row">
+      <span class="rest-icon"><svg><use href="#ic-shisha"/></svg></span>
+      <span class="rest-tag">Shisha</span>
+      <span class="rest-area">Ebisu — 恵比寿</span>
+    </div>
+    <h2 class="rest-name">A moment</h2>
+    <p class="rest-name-en">Shisha &amp; Music Lounge</p>
+    <div class="rest-ornament"><span>◆</span></div>
+    <p class="rest-story">
+      恵比寿ガーデンプレイスから2分くらいのところにあるシーシャ屋さん。前提として<em>シーシャがとても美味しい</em>のですが、空間がとても良いところもプラスポイント。<br><br>
+      よく落ち着いて仕事する時に、数人で行ってシーシャを楽しみながら仕事するパターンが多い。<em>ここで生まれた良いアイデアはたくさんある。</em>テナントもなんかよくて、電車の音がうるさいけど、その無骨な感じもまた癖になる。
+    </p>
+    <div class="rest-rec"><strong>ポイント：</strong>開放的なテラス席、焚き火、150種以上のフレーバー</div>
+    <a class="rest-link" href="https://tabelog.com/tokyo/A1303/A130302/13241783/" target="_blank" rel="noopener">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+      VIEW DETAILS
+    </a>
+  </div>
+</section>
+
+<!-- 11 Sillage -->
+<section class="page rest-page" id="p11">
+  <div class="corner-deco tl" style="color:var(--accent)"><svg><use href="#corner"/></svg></div>
+  <div class="corner-deco tr" style="color:var(--accent)"><svg><use href="#corner"/></svg></div>
+  <div class="corner-deco bl" style="color:var(--accent)"><svg><use href="#corner"/></svg></div>
+  <div class="corner-deco br" style="color:var(--accent)"><svg><use href="#corner"/></svg></div>
+  <div class="rest-card">
+    <div class="rest-num-big">11</div>
+    <div class="rest-cat-row">
+      <span class="rest-icon"><svg><use href="#ic-shisha"/></svg></span>
+      <span class="rest-tag">Shisha</span>
+      <span class="rest-area">Ōimachi — 大井町</span>
+    </div>
+    <h2 class="rest-name">Coffee &amp; Shisha Bar<br>Sillage(シアージュ)</h2>
+    <p class="rest-name-en">Sillage — the scent that lingers</p>
+    <div class="rest-ornament"><span>◆</span></div>
+    <p class="rest-story">
+      戸越に引っ越してから見つけた<em>穴場シーシャ</em>。毎月おすすめのフレーバーが8種類ぐらいあって、来店するたびに混ぜたジャムの匂いをかぎながら選ぶことができる。<br><br>
+      シーシャがめっちゃ美味しいのと、<em>信じられないくらい味が長持ちする。4時間は余裕で据える。</em>この店は景色も良い。窓際のソファー席に座ることをオススメします。
+    </p>
+    <div class="rest-rec"><strong>席のおすすめ：</strong>窓際ソファー席 — 品川の景色を眺めながら</div>
+    <a class="rest-link" href="https://shishaspot.jp/shisha-cafe-oimachi/" target="_blank" rel="noopener">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+      VIEW DETAILS
+    </a>
+  </div>
+</section>
+
+<!-- 12 An Di -->
+<section class="page rest-page" id="p12">
+  <div class="corner-deco tl" style="color:var(--accent)"><svg><use href="#corner"/></svg></div>
+  <div class="corner-deco tr" style="color:var(--accent)"><svg><use href="#corner"/></svg></div>
+  <div class="corner-deco bl" style="color:var(--accent)"><svg><use href="#corner"/></svg></div>
+  <div class="corner-deco br" style="color:var(--accent)"><svg><use href="#corner"/></svg></div>
+  <div class="rest-card">
+    <div class="rest-num-big">12</div>
+    <div class="rest-cat-row">
+      <span class="rest-icon"><svg><use href="#ic-lunch"/></svg></span>
+      <span class="rest-tag">Lunch</span>
+      <span class="rest-area">Gaien-mae — 外苑前</span>
+    </div>
+    <h2 class="rest-name">Ăn Đi(アンディ)</h2>
+    <p class="rest-name-en">Modern Vietnamese — Bib Gourmand</p>
+    <div class="rest-ornament"><span>◆</span></div>
+    <p class="rest-story">
+      美咲と付き合って間もないころ、美咲のおすすめで行った<em>モダンベトナム料理店</em>。一品一品がスペシャリテと呼べるレベルに美味しい。ペアリングのお酒もとても良い。<br><br>
+      日本酒好きの美咲とワイン好きな将太郎のテンションが上がって、昼間にもかかわらず帰りはヘロヘロだった記憶。この時はじめて美咲は、<em>将太郎が店員さんの説明を聞けない人種だということを知った。</em><br><br>
+      美咲の親友・あかりちゃんとの初対面もANDIだったね。思い出深いお店です。
+    </p>
+    <div class="rest-rec"><strong>おすすめ：</strong>おまかせコース＋ペアリング</div>
+    <a class="rest-link" href="https://www.instagram.com/andivietnamese/" target="_blank" rel="noopener">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+      VIEW DETAILS
+    </a>
+  </div>
+</section>
+
+<!-- 13 ネギタン寺山 -->
+<section class="page rest-page" id="p13">
+  <div class="corner-deco tl" style="color:var(--accent)"><svg><use href="#corner"/></svg></div>
+  <div class="corner-deco tr" style="color:var(--accent)"><svg><use href="#corner"/></svg></div>
+  <div class="corner-deco bl" style="color:var(--accent)"><svg><use href="#corner"/></svg></div>
+  <div class="corner-deco br" style="color:var(--accent)"><svg><use href="#corner"/></svg></div>
+  <div class="rest-card">
+    <div class="rest-num-big">13</div>
+    <div class="rest-cat-row">
+      <span class="rest-icon"><svg><use href="#ic-yakiniku"/></svg></span>
+      <span class="rest-tag">Yakiniku</span>
+      <span class="rest-area">Gotanda — 五反田</span>
+    </div>
+    <h2 class="rest-name">ネギタン<br>ホルモン寺山</h2>
+    <p class="rest-name-en">Negitan Horumon Terayama</p>
+    <div class="rest-ornament"><span>◆</span></div>
+    <p class="rest-story">
+      戸越に引っ越してきてから「渋谷みたいに美味しいレストランが少ないよ〜」と嘆いていた時に現れた<em>救世主。</em>とにかくお肉が美味しい。特にレバーがもう絶品です。<br><br>
+      店長さんと仲良くなると、その日の状態がいいお肉とか裏メニューとか色々教えてくれるので、<em>コミュニケーションとるべし。</em>ほんとにお肉好きなんだなという気持ちが伝わってくるので、それも一つの醍醐味です。
+    </p>
+    <div class="rest-rec"><strong>必食：</strong>名物ネギタン、レバー、特上ハラミ</div>
+    <a class="rest-link" href="https://tabelog.com/tokyo/A1316/A131603/13239085/" target="_blank" rel="noopener">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+      VIEW DETAILS
+    </a>
+  </div>
+</section>
+
+<!-- 14 MAY -->
+<section class="page rest-page" id="p14">
+  <div class="corner-deco tl" style="color:var(--accent)"><svg><use href="#corner"/></svg></div>
+  <div class="corner-deco tr" style="color:var(--accent)"><svg><use href="#corner"/></svg></div>
+  <div class="corner-deco bl" style="color:var(--accent)"><svg><use href="#corner"/></svg></div>
+  <div class="corner-deco br" style="color:var(--accent)"><svg><use href="#corner"/></svg></div>
+  <div class="rest-card">
+    <div class="rest-num-big">14</div>
+    <div class="rest-cat-row">
+      <span class="rest-icon"><svg><use href="#ic-french"/></svg></span>
+      <span class="rest-tag">French</span>
+      <span class="rest-area">Gotanda — 五反田</span>
+    </div>
+    <h2 class="rest-name">Restaurant MAY</h2>
+    <p class="rest-name-en">Contrast Classic with Modern</p>
+    <div class="rest-ornament"><span>◆</span></div>
+    <p class="rest-story">
+      20代後半を過ぎた頃からフレンチはかなり遠のいていました。バターやフォアグラみたいな油ものが多く、胃が、、って感じなのも一つの理由でした。<br><br>
+      美咲のオススメで連れて行ってもらい、<em>入籍した日に初めて行きました。</em>久々に食べたフレンチでしたが、それはそれは一品一品おいしいし、全然油っぽくない。<em>そんなにベラボーに高くないので、ぜひ一度行ってください。</em>
+    </p>
+    <div class="rest-rec"><strong>特徴：</strong>同じ食材を「クラシック×モダン」2皿で楽しめるメイン</div>
+    <a class="rest-link" href="https://may-iwata.jp/" target="_blank" rel="noopener">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+      VIEW DETAILS
+    </a>
+  </div>
+</section>
+
+<!-- ENDING -->
+<section class="page ending">
+  <div class="corner-deco tl" style="color:var(--accent)"><svg><use href="#corner"/></svg></div>
+  <div class="corner-deco tr" style="color:var(--accent)"><svg><use href="#corner"/></svg></div>
+  <div class="corner-deco bl" style="color:var(--accent)"><svg><use href="#corner"/></svg></div>
+  <div class="corner-deco br" style="color:var(--accent)"><svg><use href="#corner"/></svg></div>
+  <div class="ending-inner">
+    <p class="cover-label">Thank you</p>
+    <div class="ornament"><span class="ornament-diamond">◆</span></div>
+    <h2>
+      ここに載せきれなかった<br>
+      お店もまだまだあるので、<br>
+      ぜひ直接聞いてください。
+    </h2>
+    <div class="ornament"><span class="ornament-diamond">◆</span></div>
+    <p>
+      本日はお越しいただき<br>
+      ありがとうございます。
+    </p>
+    <p class="ending-sig">Shotaro</p>
+  </div>
+</section>
+
+<script>
+const pages = document.querySelectorAll('.page');
+const dotsContainer = document.getElementById('dots');
+pages.forEach((_, i) => {
+  const dot = document.createElement('button');
+  dot.className = 'dot';
+  dot.setAttribute('aria-label', `Page ${i + 1}`);
+  dot.onclick = () => pages[i].scrollIntoView({ behavior: 'smooth' });
+  dotsContainer.appendChild(dot);
+});
+const dots = dotsContainer.querySelectorAll('.dot');
+
+const observer = new IntersectionObserver((entries) => {
+  entries.forEach(entry => {
+    const card = entry.target.querySelector('.rest-card');
+    if (card && entry.isIntersecting) card.classList.add('visible');
+    if (entry.isIntersecting) {
+      const idx = Array.from(pages).indexOf(entry.target);
+      dots.forEach((d, i) => d.classList.toggle('active', i === idx));
+    }
+  });
+}, { threshold: 0.5 });
+
+pages.forEach(p => observer.observe(p));
+</script>
+</body>
+</html>
